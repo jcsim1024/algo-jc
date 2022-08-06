@@ -49,11 +49,11 @@ import java.util.List;
  Example test:   ([0, 1, 0, 1, 1, 1, 0], [1, 2, 3, 4, 5, 6, 7])
  WRONG ANSWER (got 0 expected 4)
  */
-public class maxCity {
+public class MaxCity {
 
     public static  void main(String args[]) {
 
-        var sol = new maxCity().solution(new int[]{4,100,1},
+        var sol = new MaxCity().solution(new int[]{4,100,1},
                 new int[]{8,2,1});
         System.out.println(sol);
 
@@ -126,7 +126,7 @@ public class maxCity {
 
         for (int y=Start_Element; y<=End_Element && End_Element-y+1 >= r-Array_Index; y++) {
             plans[Array_Index] = cities[y];
-            maxCity.combinationPossible(cities, plans, y+1, End_Element, Array_Index+1, r);
+            MaxCity.combinationPossible(cities, plans, y+1, End_Element, Array_Index+1, r);
         }
     }
 
