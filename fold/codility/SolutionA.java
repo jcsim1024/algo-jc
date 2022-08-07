@@ -1,14 +1,46 @@
 package fold.codility;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.lang.System.out;
+import static java.util.stream.IntStream.iterate;
+import static java.util.stream.IntStream.rangeClosed;
+
 public class SolutionA {
 
     public static  void main(String args[]) {
-
-        var sol = new SolutionA().solution(null);
-        System.out.println(sol);
-
+        int n = 4000000;
+        var streamInt= IntStream.concat( rangeClosed(1, 3),  iterate(5, i->i+3).limit(n));
+        var ranged = IntStream.concat(iterate(5, i->i+2).limit(n),streamInt).boxed().collect(Collectors.toList());
+        Collections.shuffle(ranged);
+        Object[] aaa =ranged.stream().toArray();
+        Object[][][] A= new Object[][][]{
+                {new Object[]{6},new Object[]{3}},
+                {aaa,new Object[]{4}},
+                {new Object[]{1},new Object[]{2}}
+        };
+        executeTest(A);
     }
-    public int solution(int[] A) {
+
+    private static void executeTest(Object[][][] A) {
+        for (Object[][] a: A) {
+            long reference=System.nanoTime();
+            var b = Arrays.stream(a[0])
+                    .mapToInt(x-> (int) x)
+                    .toArray();
+            out.println("\nInput:" + Arrays.deepToString(a));
+
+            out.println("\nOutput:"+ new MinMissingPositiveIntegerInAnArraySonar()
+                    .solution(b) + " ,Expected:" + Arrays.toString(a[1])
+            );
+            long finishm=System.nanoTime();
+            out.println("Time " + ( (double)(finishm-reference)/1000000 )+ "ms");  //in seconds
+        }
+    }
+    public int solution(int A) {
         var res= 0;
         return res;
     }

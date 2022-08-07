@@ -4,12 +4,14 @@ import static java.lang.System.*;
 
 /**
  * import static java.lang.Math.*;
+ *
+ * count numbers of 1 in binary rep of number (negativ or positiv
  */
-public class BinaryRep {
+public class BinaryRepSonar {
 
     public static  void main(String args[]) {
 
-        var sol = new BinaryRep().solution(3,7);
+        var sol = new BinaryRepSonar().solution(3,7);
         out.println(sol);
 
     }
