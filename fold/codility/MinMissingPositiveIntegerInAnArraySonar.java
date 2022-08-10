@@ -1,8 +1,9 @@
 package fold.codility;
+
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.lang.System.out;
 import static java.util.stream.IntStream.iterate;
@@ -18,7 +19,7 @@ public class MinMissingPositiveIntegerInAnArraySonar {
         var streamInt=IntStream.concat( rangeClosed(1, 3),  iterate(5, i->i+3).limit(n));
         var ranged = IntStream.concat(iterate(5, i->i+2).limit(n),streamInt).boxed().collect(Collectors.toList());
         Collections.shuffle(ranged);
-        Object[] aaa =ranged.stream().toArray();
+        Object[] aaa = ranged.toArray();
         Object[][][] A= new Object[][][]{
                 {new Object[]{1,2,8,7,5,6},new Object[]{3}},
                 {aaa,new Object[]{4}},
@@ -36,20 +37,69 @@ public class MinMissingPositiveIntegerInAnArraySonar {
             out.println("\nInput:" + Arrays.deepToString(a));
 
             out.println("\nOutput:"+ new MinMissingPositiveIntegerInAnArraySonar()
-                    .solution(b) + " ,Expected:" + Arrays.toString(a[1])
+                    .solutionAa(b) // here
+                            + " ,Expected:" + Arrays.toString(a[1])
                     );
             long finishm=System.nanoTime();
             out.println("Time " + ( (double)(finishm-reference)/1000000 )+ "ms");  //in seconds
         }
     }
 
-    public int solutionA(int[] A) {
-        SortedSet<Integer> set = IntStream.rangeClosed(1, A.length+1).boxed().collect(Collectors.toCollection(TreeSet::new));
+    /**
+     * 26sec
+     * @param A
+     * @return
+     */
+    public int solutionAc(int[] A) {
+        SortedSet<Integer> set = IntStream
+                .rangeClosed(1, A.length+1)
+                .boxed()
+                .collect(Collectors.toCollection(TreeSet::new));
         for (Integer a :
                 A) {
             set.remove(a);
         }
         return set.first();
+    }
+
+    /**
+     *  8 sec
+     * @param A
+     * @return
+     */
+    public int solutionAb(int[] A) {
+        LinkedHashSet<Integer> set = IntStream
+                .rangeClosed(1, A.length+1)
+                .boxed()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        for (Integer a :
+                A) {
+            set.remove(a);
+        }
+        return set.stream().findFirst().get();
+    }
+
+    /**
+     * 4sec
+     * fastest
+     * @param A
+     * @return
+     */
+    public int solutionAa(int[] A) {
+        boolean[] pigeonHole = new boolean[A.length+1];
+        for (int a : A) {
+            if (a > 0 && a < A.length+1) {
+                pigeonHole[a]=true;
+            }
+        }
+        int first = 1;
+        for (int i =1; i< pigeonHole.length ; i++) {
+            if (!pigeonHole[i]) {
+                first = i;
+                break;
+            }
+        }
+        return first;
     }
 
         public int solutionB(int[] A) {
@@ -102,6 +152,7 @@ public class MinMissingPositiveIntegerInAnArraySonar {
         out.println("Inters :"+ Arrays.deepToString(inters.stream().toArray()));
         return inters.stream().findFirst().orElse(new int[]{0,0})[1]+1;
     }
+    // 13 sec ~12
     public int solution(int[] A) {
             var x = 1;
             var sortedpositives = Arrays.stream(A).distinct().filter(value -> value>0).sorted().toArray();
@@ -114,5 +165,19 @@ public class MinMissingPositiveIntegerInAnArraySonar {
                 }
             }
             return x;
+    }
+    
+
+    //14sec
+    public int solutionC(int[] A) {
+        AtomicInteger x = new AtomicInteger(1);
+
+        Arrays.stream(A).distinct().filter(value -> value>0)
+                .sorted()
+                .takeWhile(value -> {
+            return value == x.get();
+        })
+                .forEach(value -> x.getAndIncrement());
+        return x.get();
     }
 }

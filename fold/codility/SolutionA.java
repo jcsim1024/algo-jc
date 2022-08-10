@@ -24,9 +24,8 @@ public class SolutionA {
         Collections.shuffle(ranged);
         Object[] aaa =ranged.stream().toArray();
         Object[][] A= new Object[][]{
-                {new Object[]{"mesage"},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }},
-                {new Object[]{""},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }
-                }
+                {new Object[]{"mesage"},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }}
+                //,{new Object[]{""},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }}
         };
         executeTest(A);
     }
