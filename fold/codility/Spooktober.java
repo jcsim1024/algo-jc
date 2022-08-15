@@ -10,12 +10,26 @@ import static java.lang.System.out;
 import static java.util.stream.IntStream.iterate;
 import static java.util.stream.IntStream.rangeClosed;
 
-public class SolutionA {
+public class Spooktober {
 
 
-    public int solution(int A) {
-        int res= 0;
-        return res;
+    public int solution(int[] A) {
+        int [] dp = new int[A.length];
+        int[] dps = new int[A.length];
+
+        for (int i = 1; i < A.length; i++) {
+            dp[i]= (dp[i-1] +A[i-1])/2 ;
+        }
+
+        int maxDps= dp[A.length-1] + dps[A.length-1] + A[A.length-1];
+
+        for (int j = A.length-2; j >= 0; j--) {
+            dps[j]= (dps[j+1] +A[j+1])/2 ;
+            maxDps= Math.max(dp[j] + dps[j] + A[j], maxDps);
+
+        }
+
+        return maxDps;
     }
 
     public static  void main(String args[]) {
@@ -25,7 +39,10 @@ public class SolutionA {
         Collections.shuffle(ranged);
         Object[] aaa =ranged.stream().toArray();
         Object[][] A= new Object[][]{
-                {new Object[]{"mesage"},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }}
+  //              {new Object[]{"Case nominal"},new Object[] { 2, 3, 1, 3 }, 3,  new Object[]{  5 }}
+//,                {new Object[]{"Case limit right "},new Object[] { 15, 3, 1, 3 }, 3,  new Object[]{  17 }}
+//,
+                {new Object[]{"Case double"},new Object[] { 2, 2, 2, 1 }, 3,  new Object[]{  4 }}
                 //,{new Object[]{""},new Object[] { 3, 8, 9, 7, 6 }, 3,  new Object[]{  9, 7, 6,  3, 8 }}
         };
         executeTest(A);
@@ -40,7 +57,7 @@ public class SolutionA {
 
             out.println("\nOutput:"
                     + //Arrays.toString(
-                            new SolutionA().solution(sec)
+                            new Spooktober().solution(arrayInt1)
                     + " \nExpect:"
                     + Arrays.toString((Object[]) a[3])
             );
